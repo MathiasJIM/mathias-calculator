@@ -77,7 +77,7 @@ const processScreen = (btnClicked) => {
     isOperator = false;
     btnClicked = "-";
     num1 = btnClicked;
-  } else if (btnClicked === "-" && num2.length === 0 && operatorClicked) {
+  } else if (btnClicked === "-" && num2.length === 1 && operatorClicked) {
     btnClicked = "-";
     num2 = btnClicked;
   }
@@ -87,7 +87,7 @@ const processScreen = (btnClicked) => {
     return (btnClicked = "");
   }
   //Prevents the print equal if the nums and operator are empty
-  if (isEqual && operator.length === 0 && num2.length === 0) {
+  if (isEqual && operator.length === 0 && num2.length === 1) {
     return (btnClicked = "");
   }
 
