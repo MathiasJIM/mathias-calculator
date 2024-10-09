@@ -28,6 +28,7 @@ p {
 }
 
 .container {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-color: #575757;
     padding: 20px;
     border-radius: 10px;
@@ -87,6 +88,10 @@ button {
     border-radius: 2px;
     padding: 0px 20px;
     cursor: pointer;
+}
+
+.regular-button {
+    color: black;
 }
 
 .regular-button:hover {

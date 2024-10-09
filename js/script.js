@@ -4,10 +4,11 @@ const currentOperation = document.querySelector(".currentOperation");
 const lastOperation = document.querySelector(".lastOperation");
 
 let nextNum = false;
+let operatorClicked = false;
 let operation = "";
 let num1 = "";
 let operator = "";
-let num2 = "";
+let num2 = "0";
 
 const add = (num1,num2) =>  num1 + num2;
 const multiply = (num1,num2) => num1 * num2;
@@ -49,37 +50,95 @@ const clearScreen = () => {
   num2 = "";
   operator = "";
   nextNum = false;
+  operatorClicked = false;
 };  
+
+const deleteNumber = () => {
+  lastNum = currentOperation.textContent.length - 1
+  newNumber = currentOperation.textContent.slice(0,-1);
+  currentOperation.textContent = newNumber;
+  if(operatorClicked){
+    num2 = newNumber;
+  } else {
+    num1 = newNumber;
+  }
+
+  updateOperation = operation.slice(0,1);
+  operation = updateOperation;
+}
+
 
 
 const processScreen = (btnClicked) => {
   let isOperator = btnClicked === "+" || btnClicked === "x" || btnClicked === "÷" || btnClicked === "-";
   let isEqual = btnClicked === "=";
   let isClear = btnClicked === "clear"
+  let isDel = btnClicked === "del"
+  let notNumber = isOperator || isClear || isDel || isEqual;
 
+  //Check the negative number
+  if(btnClicked === "-" && num1.length === 0 ){
+    isOperator = false;
+    btnClicked = "-";
+    num1 = btnClicked;
+  }
+  else if(btnClicked === "-" && num2.length === 0 && operatorClicked){
+    btnClicked = "-";
+    num2 = btnClicked;
+  }
+
+  //Check if is an empty decimal
+  if(btnClicked === "." && num1.length === 0){
+    num1 += 0;
+  } 
+  else if (btnClicked === "." && num2.length === 0){
+    num2 += 0;
+  }
+
+  //Prevents the print of any operator if the nums are empty
+  if(isOperator && num1.length == 0){
+    return btnClicked = "";
+  }
+  //Prevents the print equal if the nums and operator are empty
   if(isEqual && operator.length === 0 && num2.length === 0){
+    return btnClicked = "";
+  }
+
+  //Prevents the print of del
+  if(isDel){
     btnClicked = "";
   }
 
   operation += btnClicked;
 
-  if(isOperator){
+  if(currentOperation.textContent === "0"){
+    currentOperation.textContent = "";
+  }
+
+  //check if the btnclick is one of the operators
+  if(isOperator && !operatorClicked){
     nextNum = true;
+    operatorClicked = true;
     operator = btnClicked;
     console.log(operator);
     lastOperation.textContent = operation;
     btnClicked = "";
     currentOperation.textContent = "0";
   }
-
-  if(nextNum === false && !isOperator){
+  //prevent te repetition of operators
+  if(operatorClicked && isOperator){
+    btnClicked = "";
+  }
+  //set first num
+  if(nextNum === false && !notNumber){
     num1 += btnClicked;
   }
-
-  if(operator.length === 1){
+  // set second num
+  if(operator.length === 1 && !isOperator){
     num2 += btnClicked;
   }
 
+  //if is equal and nums are filled with te operator then run this process
   if(isEqual){
     result = operate(operator, parseFloat(num1), parseFloat(num2));
 
@@ -91,27 +150,35 @@ const processScreen = (btnClicked) => {
 
     lastOperation.textContent += `${num2} ${result}`;
     currentOperation.textContent = result;
-    
 
-    num1 = result
+    if(result === 0){
+      num1 = "";
+    }else{
+      num1 = result
+    }
+
     operation = num1;
     num2 = "";
+    operator = "";
+    nextNum = false;
+    operatorClicked = false;
     btnClicked = "";
-  }
-
-  if(currentOperation.textContent === "0"){
-    currentOperation.textContent = "";
   }
 
   if(isClear){
     clearScreen();
-  } else {
+  }
+  else if(isDel){
+    deleteNumber();
+  } 
+  else {
     currentOperation.textContent += btnClicked;
   }
 
   console.log("num1",num1);
   console.log("num2",num2);
-  console.log("opertor",operator);
-  console.log(nextNum);
+  console.log("operator",operator);
+  console.log("click operator",operatorClicked);
+  console.log("next num",nextNum);
 };
 
