@@ -125,11 +125,13 @@ const processScreen = (btnClicked) => {
     num1 += btnClicked;
   }
   // set second num
-  if (operator.length === 1 && !isOperator && !isEqual) {
-    num2 = "";
+  if (nextNum && !isOperator && !isEqual) {
+    if(num2.length === 1 && num2 === "0"){
+      num2 = "";
+    }
     num2 += btnClicked;
   }
-
+  //Check if is an empty decimal
   if (btnClicked === "." && num2.length === 1 && num2 === ".") {
     num2 += 0;
   }
