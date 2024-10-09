@@ -47,7 +47,7 @@ const clearScreen = () => {
   currentOperation.textContent = "0";
   operation = "";
   num1 = "";
-  num2 = "";
+  num2 = "0";
   operator = "";
   nextNum = false;
   operatorClicked = false;
@@ -63,7 +63,7 @@ const deleteNumber = () => {
     num1 = newNumber;
   }
 
-  updateOperation = operation.slice(0,1);
+  updateOperation = operation.substring(0, operation.length - 1);;
   operation = updateOperation;
 }
 
@@ -134,7 +134,8 @@ const processScreen = (btnClicked) => {
     num1 += btnClicked;
   }
   // set second num
-  if(operator.length === 1 && !isOperator){
+  if(operator.length === 1 && !isOperator && !isEqual){
+    num2 = "";
     num2 += btnClicked;
   }
 
@@ -148,7 +149,7 @@ const processScreen = (btnClicked) => {
       result = result.toFixed(2);
     }
 
-    lastOperation.textContent += `${num2} ${result}`;
+    lastOperation.textContent += `${num2} = ${result}`;
     currentOperation.textContent = result;
 
     if(result === 0){
@@ -158,7 +159,7 @@ const processScreen = (btnClicked) => {
     }
 
     operation = num1;
-    num2 = "";
+    num2 = "0";
     operator = "";
     nextNum = false;
     operatorClicked = false;
@@ -180,5 +181,6 @@ const processScreen = (btnClicked) => {
   console.log("operator",operator);
   console.log("click operator",operatorClicked);
   console.log("next num",nextNum);
+  console.log("operation",operation);
 };
 
